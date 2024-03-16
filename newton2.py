@@ -15,12 +15,14 @@ def climate_equation(y, t, k):
     Retorno:
         A derivada da temperatura em relação ao tempo (dy/dt).
     """
-    return -k * y
+    return -k * (y - 25)
 
 # Definindo as condições iniciais e parâmetros
-t = np.linspace(0, 100, 1000)  # Vetor de tempos com 1000 pontos entre 0 e 100 minutos
+t = np.linspace(0, 165.84, 1000)  # Vetor de tempos com 1000 pontos entre 0 e 165.84 minutos
 y0 = 92.0  # Temperatura inicial da água (92°C)
-k = -np.log(85 / y0) / 1  # Taxa de resfriamento calculada com base na informação do problema
+T_a = 25.0  # Temperatura ambiente (25°C)
+delta_T = 92 - T_a  # Diferença de temperatura inicial
+k = -np.log((y0 - T_a) / (delta_T - T_a)) / 1  # Taxa de resfriamento calculada com base na temperatura ambiente
 
 # Resolvendo a equação diferencial
 sol = odeint(climate_equation, y0, t, args=(k,))
@@ -46,10 +48,7 @@ tempo_60C = t[np.where(sol <= 60)[0][0]]
 # Imprimindo os resultados
 print(f"Temperatura da água após 1 minuto: {sol[1]:.2f}°C")
 print(f"Tempo para atingir 60°C: {tempo_60C:.2f} minutos")
-# A solução dessa equação é t = 13.87 minuto
-# k = -np.log(85 / y0) / 1  # Taxa de resfriamento calculada com base na informação do problema
 
-
-# A temperatura da água após 1 minuto é de 87,24°C.
-# Levará 13,87 minutos para a água atingir a temperatura de 60°C.
+# t = 5.884512828 minutos.
+# t= ((ln(35/67))/(ln(60/67)) QUE É t=5.884512828
 
